@@ -11,18 +11,18 @@
              {
                 "question_id" : "Unique-ID",
                 "reponse_format" : "trueOrFalse",
-                "question":"Did you enjoy the course?",
+                "title":"Did you enjoy the course?",
             },
             {
                 "question_id" : "Unique-ID",
                 "reponse_format" : "multipleChoice",
-                "question":"Did you enjoy the course?",
+                "title":"Did you enjoy the course?",
                 "options":["Not at all","It was an average course","It was an excellent course"],
             },
             {
                 "question_id" : "Unique-ID",
                 "reponse_format" : "freeResponse",
-                "question":"Did you enjoy the course?",
+                "title":"Did you enjoy the course?",
                 "options":[],
             }
         ]
@@ -39,18 +39,18 @@
              {
                 "question_id" : "Unique-ID",
                 "reponse_format" : "trueOrFalse",
-                "question":"Did you enjoy the course?",
+                "title":"Did you enjoy the course?",
             },
             {
                 "question_id" : "Unique-ID",
                 "reponse_format" : "multipleChoice",
-                "question":"Did you enjoy the course?",
+                "title":"Did you enjoy the course?",
                 "options":["Not at all","It was an average course","It was an excellent course"],
             },
             {
                 "question_id" : "Unique-ID",
                 "reponse_format" : "freeResponse",
-                "question":"Did you enjoy the course?",
+                "title":"Did you enjoy the course?",
                 "options":[],
             }
         ]
@@ -67,18 +67,18 @@
              {
                 "question_id" : "Unique-ID",
                 "reponse_format" : "trueOrFalse",
-                "question":"Did you enjoy the course?",
+                "title":"Did you enjoy the course?",
             },
             {
                 "question_id" : "Unique-ID",
                 "reponse_format" : "multipleChoice",
-                "question":"Did you enjoy the course?",
+                "title":"Did you enjoy the course?",
                 "options":["Not at all","It was an average course","It was an excellent course"],
             },
             {
                 "question_id" : "Unique-ID",
                 "reponse_format" : "freeResponse",
-                "question":"Did you enjoy the course?",
+                "title":"Did you enjoy the course?",
                 "options":[],
             }
         ]

@@ -75,14 +75,18 @@ class CuLdapRegisterHandler(RegisterHandler):
         return data
 
     def registerUser(self, data):
+        user = self.application.settings['user']
         username = self.get_argument('username', strip=True)
-        verified = User().verify(data)
+        verified = user.verify(data)
         if len(verified) != 0:
             logging.error('User: verification errors!')
             logging.error(verified)
             return self.verifyCULdapRegistrationPage(username, verified)
-        user_id = User().create_item(data)
-        user_data = User().get_item(user_id)
+        user_id = user.create_item(data)
+        user.subscribe_user(user_id, 'meta')
+        logging.info(self.application.settings['initial_survey_id'])
+        user.send_user_survey(user_id, self.application.settings['initial_survey_id'])
+        user_data = user.get_item(user_id)
         self.set_current_user(user_data)
         return self.redirect(self.get_argument("next", "/dashboard"))
 

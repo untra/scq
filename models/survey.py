@@ -19,7 +19,7 @@ class Survey(BaseModel):
 
     def fields(self):
         return {
-            'questions': (self.is_list, self.is_not_empty, self.schema_list_check(self.is_string),),
+            'questions': (self.is_list, self.is_not_empty, ),
             'item_type': (self.is_string, self.is_in_list(self.ITEM_TYPES),),
             'item_id': (self.is_string, self.is_not_empty, ),
             'item_name': (self.is_string, self.is_not_empty,),
@@ -34,25 +34,29 @@ class Survey(BaseModel):
     def create_item(self, data):
         data['responses'] = []
         data['created_timestamp'] = time.time()
+        item_type = data['item_type']
+        model = self._model_from_item_type(item_type)
         if 'closed_timestamp' not in data.keys():
             data['closed_timestamp'] = None
         item_id = data['item_id']
         creator_id = data['creator_id']
         creator_data = User().get_item(creator_id)
-        course_data = Course().get_item(item_id)
+        model_data = model.get_item(item_id)
         if creator_data is None:
             logging.error('creator_id does not correspond to value in database')
             return None
-        if course_data is None:
+        if model_data is None:
             logging.error('item_id does not correspond to value in database')
             return None
-        data['item_name'] = course_data['course_name']
         data['creator_name'] = creator_data['username']
         survey_id = super(Survey, self).create_item(data)
-        active_surveys = course_data['active_surveys']
+        logging.info(model_data)
+        active_surveys = model_data['active_surveys']
         active_surveys.append(survey_id)
-        subscribers = course_data['subscribers']
-        Course().update_item(item_id, {'active_surveys': active_surveys}, skip_verify=True)
+        subscribers = model_data['subscribers']
+        model.update_item(item_id, {'active_surveys': active_surveys}, skip_verify=True)
+        logging.info(creator_id)
+        logging.info(survey_id)
         self.send_user_survey(creator_id, survey_id, 'created_surveys')
         for subscriber_id in subscribers:
             self.send_user_survey(subscriber_id, survey_id)

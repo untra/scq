@@ -19,7 +19,7 @@ class User(BaseModel):
 
     # must be overridden
     def requiredFields(self):
-        return ['registration', 'username', 'email', 'accepted_tos', 'date_registered']
+        return ['registration', 'username', 'email', 'accepted_tos', 'date_registered', 'active_surveys', 'inactive_surveys']
 
     # must be overrriden
     def fields(self):
@@ -42,7 +42,10 @@ class User(BaseModel):
             'answered_surveys': (b.is_list,),
             'survey_responses': (b.is_list,),
             'answers': (b.is_list,),
+            'subscribers': (b.is_list,),
             'primary_affiliation': (b.is_list,),
+            'active_surveys': (self.is_list, ),
+            'inactive_surveys': (self.is_list,),
         }
 
     # returns default user data, that can be overwritten. Good for templating a new user
@@ -64,7 +67,10 @@ class User(BaseModel):
             'unanswered_surveys': [],
             'answered_surveys': [],
             'created_surveys': [],
+            'active_surveys': [],
+            'inactive_surveys': [],
             'survey_responses': [],
+            'subscribers': [],
             'answers': [],
             'primary_affiliation': [],
         }

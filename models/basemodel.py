@@ -158,31 +158,31 @@ class BaseModel:
                 return None
         return r.db(self.DB).table(table).get(idnum).update(data).run(self.conn)
 
-    def subscribe_user(self, user_id, row_id, user_subscription_name=None):
+    def subscribe_user(self, user_id, model_id, user_subscription_name=None):
         """
         adds a user id to a model's subscription list.
         """
-        row_table = self.__class__.__name__
+        model_table = self.__class__.__name__
         user_table = 'User'
         user_data = r.db(self.DB).table(user_table).get(user_id).run(self.conn)
-        row_data = r.db(self.DB).table(row_table).get(row_id).run(self.conn)
+        model_data = r.db(self.DB).table(model_table).get(model_id).run(self.conn)
         if user_data is None:
             logging.error("User {0} does not exist".format(user_data))
             return False
         if user_data is None:
-            logging.error("{0} {1} does not exist".format(table, row_data))
+            logging.error("{0} {1} does not exist".format(table, model_data))
             return False
         try:
             if user_subscription_name is not None:
                 user_subscription = user_data[user_subscription_name]
-                user_subscription.append(row_id)
+                user_subscription.append(model_id)
                 r.db(self.DB).table(user_table).get(user_id).update({user_subscription_name: user_subscription}).run(self.conn)
         except KeyError:
             logging.error("user subscription {0} not known in user data".format(user_subscription_name))
             return False
-        subscribers = row_data['subscribers']
+        subscribers = model_data['subscribers']
         subscribers.append(user_id)
-        return r.db(self.DB).table(row_table).get(row_id).update({'subscribers': subscribers}).run(self.conn)
+        return r.db(self.DB).table(model_table).get(model_id).update({'subscribers': subscribers}).run(self.conn)
 
     # adds a survey_id to a user's unanswered_surveys list.
     # maybe this should live somewhere else? like user? or survey?

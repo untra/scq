@@ -13,6 +13,7 @@ from models.survey_response import SurveyResponse
 from models.question_response import QuestionResponse
 import logging
 import rethinkdb as r
+import time
 
 settings = {
     'cookie_secret': "8goWPH9uTyO+9e2NzuaW6pbR6WKH1EbmrXIfxttXq00=",
@@ -66,7 +67,27 @@ def initialize_settings():
         meta_data['username'] = 'Campus Consensus Team'
         meta_data['accepted_tos'] = True
         meta_data['email'] = 'xxx@colorado.edu'
+        logging.warn(meta_data)
         settings['meta'] = settings['user'].create_item(meta_data, skip_verify=True)
+    try:
+        logging.info(settings['meta'])
+        settings['initial_survey_id'] = settings['meta']['active_surveys'][0]
+    except:
+        initial_survey_data = settings['survey'].default()
+        initial_survey_data['questions'] = [
+            {
+                'title': 'Welcome to Campus Consensus! What classes did you take in the past?',
+                'response_format': 'freeResponse',
+                'options': []
+            }
+        ]
+        initial_survey_data['item_type'] = 'User'
+        initial_survey_data['item_id'] = 'meta'
+        initial_survey_data['item_name'] = 'Campus Consensus Team'
+        initial_survey_data['creator_id'] = 'meta'
+        initial_survey_data['creator_name'] = 'Campus Consensus Team'
+        settings['initial_survey_id'] = settings['survey'].create_item(initial_survey_data)
+        logging.info(settings['initial_survey_id'])
     return settings
 
 
